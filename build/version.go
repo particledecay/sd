@@ -8,7 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// NOTE: build.Version is set during the build process (on the command line)
+// NOTE: Version is set during the build process (on the command line)
 
 var (
 	// Version holds the tag of the build
