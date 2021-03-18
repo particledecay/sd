@@ -2,7 +2,10 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
+	"os"
 
+	"github.com/particledecay/sd/build"
 	"github.com/particledecay/sd/conf"
 	"github.com/particledecay/sd/internal"
 	"github.com/rs/zerolog"
@@ -11,6 +14,7 @@ import (
 )
 
 var verbose bool
+var version bool
 
 var rootCmd = &cobra.Command{
 	Use:   "sd",
@@ -23,12 +27,18 @@ var rootCmd = &cobra.Command{
 		}
 	},
 	Args: func(cmd *cobra.Command, args []string) error {
-		if len(args) < 1 {
+		if len(args) < 1 && !version {
 			return errors.New("an action is required")
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		// if version, print and exit
+		if version {
+			fmt.Println(build.PrintVersion(verbose))
+			os.Exit(0)
+		}
+
 		if len(args) < 2 {
 			log.Fatal().Msg("a category and script name is required")
 		}
@@ -41,6 +51,7 @@ var rootCmd = &cobra.Command{
 func init() {
 	// flags
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "display debug log messages")
+	rootCmd.PersistentFlags().BoolVarP(&version, "version", "V", false, "display version information and exit")
 }
 
 // Execute combines all of the available command functions
