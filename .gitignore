@@ -16,3 +16,6 @@
 
 # Go
 vendor/
+
+# test coverage
+*.coverprofile
